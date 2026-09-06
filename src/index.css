@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap');
+@import 'tailwindcss';
+
+@theme inline {
+  --font-sans: "Be Vietnam Pro", sans-serif;
+  --color-tcv-green: #1a5c35;
+  --color-tcv-green-dark: #0d3320;
+  --color-tcv-green-light: #256b40;
+  --color-tcv-red: #c81f1a;
+  --color-tcv-red-dark: #a01510;
+  --color-tcv-gold: #e8a020;
+  --color-tcv-bg: #f5faf6;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: "Be Vietnam Pro", sans-serif;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1a5c35 transparent;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(1);    opacity: 0.7; }
+  100% { transform: scale(1.55); opacity: 0; }
+}
+
+.animate-fadeup { animation: fadeUp 0.6s ease both; }
+.animate-fadeup-2 { animation: fadeUp 0.6s 0.15s ease both; }
+.animate-fadeup-3 { animation: fadeUp 0.6s 0.3s ease both; }
+
+.pulse-ring {
+  position: absolute; inset: 0;
+  border-radius: 9999px;
+  border: 2px solid #c81f1a;
+  animation: pulse-ring 1.6s ease-out infinite;
+}
