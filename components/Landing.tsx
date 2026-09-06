@@ -1,6 +1,9 @@
+"use client";
+
 import { useState } from "react";
-import posterImg from "@/imports/1788670675831_3597282197715145481_3597282197715145481_b978c2592932efbdc93330764d63af00.jpg";
-import logoImg from "@/imports/logo.png";
+import Image from "next/image";
+import posterImg from "@/public/poster.jpg";
+import logoImg from "@/public/logo.png";
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 
@@ -161,9 +164,12 @@ function Navbar({ onContact }: { onContact: () => void }) {
           className="flex items-center gap-3"
         >
           <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow overflow-hidden shrink-0">
-            <img
+            <Image
               src={logoImg}
               alt="Tín Chấp Việt"
+              width={36}
+              height={36}
+              priority
               className="w-9 h-9 object-contain"
             />
           </div>
@@ -306,10 +312,12 @@ function Hero({ onContact }: { onContact: () => void }) {
         <div className="animate-fadeup-2 relative flex justify-center md:justify-end">
           <div className="relative w-full max-w-sm">
             <div className="absolute -inset-3 bg-gradient-to-br from-[#a8d5b5] to-[#c81f1a]/10 rounded-3xl blur-xl opacity-70" />
-            <img
+            <Image
               src={posterImg}
               alt="Tín Chấp Việt – Vay đơn giản, giải ngân nhanh"
-              className="relative rounded-2xl shadow-2xl w-full object-cover border border-white/10"
+              priority
+              sizes="(max-width: 768px) 100vw, 384px"
+              className="relative rounded-2xl shadow-2xl w-full h-auto object-cover border border-white/10"
             />
           </div>
         </div>
@@ -506,10 +514,35 @@ function ContactCTA({ id }: { id?: string }) {
     note: "",
   });
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setSent(true);
+    if (sending) return;
+    setSending(true);
+    setError("");
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data?.error || "Gửi không thành công");
+      }
+      setForm({ name: "", phone: "", amount: "", note: "" });
+      setSent(true);
+    } catch (err) {
+      setError(
+        err instanceof Error && err.message
+          ? err.message
+          : "Không gửi được. Vui lòng gọi hotline 0985 410 836.",
+      );
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -675,10 +708,16 @@ function ContactCTA({ id }: { id?: string }) {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-[#c81f1a] hover:bg-[#a01510] text-white font-bold py-4 rounded-xl text-base transition-all duration-200 hover:scale-[1.01] shadow-[0_4px_20px_rgba(200,31,26,0.35)]"
+                  disabled={sending}
+                  className="w-full bg-[#c81f1a] hover:bg-[#a01510] text-white font-bold py-4 rounded-xl text-base transition-all duration-200 hover:scale-[1.01] shadow-[0_4px_20px_rgba(200,31,26,0.35)] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
-                  Đăng Ký Ngay – Miễn Phí Tư Vấn
+                  {sending ? "Đang gửi..." : "Đăng Ký Ngay – Miễn Phí Tư Vấn"}
                 </button>
+                {error && (
+                  <p className="text-center text-[#c81f1a] text-sm font-medium">
+                    {error}
+                  </p>
+                )}
                 <p className="text-center text-gray-400 text-xs">
                   Thông tin của bạn được bảo mật tuyệt đối
                 </p>
@@ -699,9 +738,12 @@ function Footer() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center overflow-hidden shrink-0">
-            <img
+            <Image
               src={logoImg}
               alt="Tín Chấp Việt"
+              width={32}
+              height={32}
+              priority
               className="w-8 h-8 object-contain"
             />
           </div>
@@ -755,7 +797,7 @@ function FloatingCTA() {
 
 // ── App ───────────────────────────────────────────────────────────────────────
 
-export default function App() {
+export default function Landing() {
   const [, setContactOpen] = useState(false);
 
   function scrollToContact() {

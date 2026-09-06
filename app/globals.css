@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap');
 @import 'tailwindcss';
 
+/* Khai báo tường minh cho chắc, không phụ thuộc dò tự động. */
+@source '../app';
+@source '../components';
+
 @theme inline {
   --font-sans: "Be Vietnam Pro", sans-serif;
   --color-tcv-green: #1a5c35;
@@ -12,7 +16,7 @@
   --color-tcv-bg: #f5faf6;
 }
 
-html, body, #root {
+html, body {
   height: 100%;
 }
 

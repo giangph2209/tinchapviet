@@ -1,41 +1,48 @@
-# figma-make-app
+# tinchapviet
 
-React + Vite + Tailwind CSS project running inside Figma Make.
+Landing page vay tín chấp + trang quản trị đăng ký. Next.js 15 (App Router),
+React 19, Tailwind CSS v4, Neon Postgres. Deploy trên Vercel.
 
-## Development Server
+## Chạy máy cá nhân
 
-A Vite development server is **already running** on `$PORT` (default 8443). You don't need to start it manually.
+```bash
+pnpm install
+cp .env.example .env.local   # điền DATABASE_URL và ADMIN_PASSWORD
+pnpm dev                     # http://localhost:3000
+```
 
-- Preview URL: The user can access the running app through the preview panel
-- Hot reload: Changes to source files are reflected immediately
+`pnpm build` chạy `next build`, `pnpm typecheck` chạy `tsc --noEmit`.
 
-## Project Structure
+## Cấu trúc
 
-This is the canonical project structure. Start with task-relevant files below. Only follow imports or inspect other files when required, when a documented path is missing, or when the repository contradicts this guide.
+- `app/page.tsx` – trang chủ, chỉ bọc `components/Landing.tsx`
+- `components/Landing.tsx` – toàn bộ giao diện landing (client component)
+- `app/globals.css` – Tailwind v4 + `@theme` màu thương hiệu + animation
+- `app/layout.tsx` – metadata, favicon (`public/logo.png`)
+- `app/admin/page.tsx` – bảng danh sách đăng ký, lọc, phân trang, thống kê
+- `app/admin/LeadsTable.tsx` – bảng có đổi trạng thái / xoá (client)
+- `app/admin/actions.ts` – server action đổi trạng thái, xoá
+- `app/admin/login/page.tsx` – form đăng nhập
+- `app/api/leads/route.ts` – POST nhận đăng ký từ form
+- `app/api/admin/{login,logout,export}` – đăng nhập, đăng xuất, tải CSV
+- `middleware.ts` – chặn `/admin/*` và `/api/admin/*` khi chưa đăng nhập
+- `lib/db.ts` – kết nối Neon, tạo bảng `leads` nếu chưa có
+- `lib/leads.ts` – kiểu dữ liệu, kiểm tra đầu vào, truy vấn
+- `lib/auth.ts` – mật khẩu admin, cookie phiên ký HMAC (Web Crypto)
+- `lib/session.ts` – đọc cookie phiên trong server component / server action
 
-- `src/main.tsx` - React entrypoint; imports `src/index.css` and mounts `src/App.tsx` into the `#root` element
-- `src/App.tsx` - Primary application component and the usual starting point for UI work
-- `src/index.css` - Global CSS entrypoint and Tailwind CSS v4 import
-- `index.html` - Vite HTML shell containing the `#root` element and loading `src/main.tsx`
-- `package.json` - Project dependencies and the Vite build, development, preview, and formatting scripts
-- `vite.config.ts` - Vite configuration with React, Tailwind CSS v4, and Figma Make plugins plus the `@` alias for `src`
-- `.mise.toml` - Toolchain versions for Node.js and pnpm
+## Biến môi trường
 
-## Dependencies
+| Biến | Bắt buộc | Ghi chú |
+| --- | --- | --- |
+| `DATABASE_URL` | có | Neon tự đổ vào khi gắn ở Vercel > Storage |
+| `ADMIN_PASSWORD` | có | Mật khẩu vào `/admin` |
+| `AUTH_SECRET` | không | Khoá ký cookie; bỏ trống thì dẫn xuất từ `ADMIN_PASSWORD` |
 
-- Runtime: React 19 and React DOM 19
-- Styling: Tailwind CSS v4 with the `@tailwindcss/vite` plugin
-- Build tooling: Vite 8, TypeScript 5.7, and `@vitejs/plugin-react`
-- Formatting: oxfmt
+## Lưu ý khi sửa code
 
-## Styling
-
-This project uses **Tailwind CSS v4** through the `@tailwindcss/vite` plugin configured in `vite.config.ts`. `src/index.css` imports Tailwind with `@import 'tailwindcss';`. Use Tailwind utility classes directly in JSX and put global CSS or Tailwind v4 theme customization in `src/index.css`. This scaffold does not need a Tailwind config file or PostCSS config.
-
-`src/main.tsx` imports `src/index.css`, so global font wiring belongs in `src/index.css`. Keep CSS `@import` statements first, then add any `@font-face` rules and font-family defaults there.
-
-## Code quality
-
-- Use double quotes for strings containing apostrophes (`"We're here to help"`), or escape them in single-quoted strings. An unescaped apostrophe in a single-quoted string breaks the build.
-- Ensure JSX tags are closed and braces are balanced.
-- Export components as default exports.
+- Ảnh đặt trong `public/` và **không** để Git LFS quản lý: Vercel không tải LFS
+  objects khi build nên ảnh sẽ thành file con trỏ và bị vỡ. Xem `.gitattributes`.
+- Dùng nháy kép cho chuỗi có dấu nháy đơn (`"We're here"`), hoặc escape lại.
+- Bảng `leads` được tạo tự động bằng `CREATE TABLE IF NOT EXISTS` trong
+  `lib/db.ts`; dự án chỉ có một bảng nên chưa cần công cụ migration riêng.
