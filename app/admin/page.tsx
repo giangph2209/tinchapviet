@@ -8,6 +8,13 @@ export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 50;
 
+const STAT_ACCENT: Record<string, string> = {
+  new: "bg-[#c81f1a]",
+  contacted: "bg-[#e8a020]",
+  done: "bg-[#1a5c35]",
+  rejected: "bg-gray-300",
+};
+
 type SearchParams = { q?: string; status?: string; page?: string };
 
 export default async function AdminPage({
@@ -89,14 +96,18 @@ export default async function AdminPage({
         )}
 
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-          <div className="bg-white rounded-xl border border-gray-100 p-4">
-            <div className="text-gray-400 text-xs uppercase tracking-wide">Tổng đăng ký</div>
-            <div className="text-[#0d3320] font-black text-2xl mt-1">{totalAll}</div>
+          <div className="bg-[#0d3320] rounded-xl p-4 shadow-sm">
+            <div className="text-[#a8d5b5] text-[11px] uppercase tracking-wider font-semibold">Tổng đăng ký</div>
+            <div className="text-white font-black text-3xl mt-1 leading-none">{totalAll}</div>
           </div>
           {LEAD_STATUSES.map((s) => (
-            <div key={s} className="bg-white rounded-xl border border-gray-100 p-4">
-              <div className="text-gray-400 text-xs uppercase tracking-wide">{STATUS_LABEL[s]}</div>
-              <div className="text-[#0d3320] font-black text-2xl mt-1">{stats[s] ?? 0}</div>
+            <div
+              key={s}
+              className="relative bg-white rounded-xl border border-gray-100 p-4 pl-5 shadow-sm overflow-hidden"
+            >
+              <span className={`absolute left-0 top-0 bottom-0 w-1.5 ${STAT_ACCENT[s]}`} />
+              <div className="text-gray-400 text-[11px] uppercase tracking-wider font-semibold">{STATUS_LABEL[s]}</div>
+              <div className="text-[#0d3320] font-black text-3xl mt-1 leading-none">{stats[s] ?? 0}</div>
             </div>
           ))}
         </div>
