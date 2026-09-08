@@ -12,6 +12,8 @@ pnpm dev                     # http://localhost:3000
 ```
 
 `pnpm build` chạy `next build`, `pnpm typecheck` chạy `tsc --noEmit`.
+`pnpm db:init` tạo bảng và kiểm tra kết nối cơ sở dữ liệu (thêm `--test` để
+ghi/xoá thử một dòng).
 
 ## Cấu trúc
 
@@ -30,6 +32,7 @@ pnpm dev                     # http://localhost:3000
 - `lib/leads.ts` – kiểu dữ liệu, kiểm tra đầu vào, truy vấn
 - `lib/auth.ts` – mật khẩu admin, cookie phiên ký HMAC (Web Crypto)
 - `lib/session.ts` – đọc cookie phiên trong server component / server action
+- `scripts/init-db.ts` – khởi tạo và kiểm tra cơ sở dữ liệu (`pnpm db:init`)
 
 ## Biến môi trường
 

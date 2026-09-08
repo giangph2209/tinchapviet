@@ -98,7 +98,7 @@ export async function listLeads(options: ListLeadsOptions = {}): Promise<{ rows:
     FROM leads
     WHERE (${status}::text IS NULL OR status = ${status})
       AND (${pattern}::text IS NULL OR name ILIKE ${pattern} OR phone ILIKE ${pattern} OR note ILIKE ${pattern})
-    ORDER BY created_at DESC
+    ORDER BY created_at DESC, id DESC
     LIMIT ${limit} OFFSET ${offset}
   `) as Lead[];
 
@@ -134,6 +134,6 @@ export async function allLeadsForExport(): Promise<Lead[]> {
   await ensureSchema();
   return (await sql()`
     SELECT id, name, phone, amount, note, status, ip, user_agent, created_at
-    FROM leads ORDER BY created_at DESC
+    FROM leads ORDER BY created_at DESC, id DESC
   `) as Lead[];
 }

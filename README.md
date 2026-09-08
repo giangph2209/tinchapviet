@@ -17,6 +17,10 @@ Landing page vay tín chấp + trang quản trị lưu thông tin khách đăng 
 
 3. **Deploy lại** để biến môi trường có hiệu lực.
 
+4. **Kiểm tra kết nối** (tuỳ chọn, chạy ở máy bạn): dán chuỗi kết nối vào `.env`
+   rồi chạy `pnpm db:init --test`. Script sẽ tạo bảng, in cấu trúc bảng và ghi
+   thử một dòng rồi xoá đi để chắc chắn chuỗi kết nối có quyền ghi.
+
 ## Sử dụng
 
 - Trang chủ `/` – khách điền form đăng ký vay.

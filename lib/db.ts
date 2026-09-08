@@ -38,7 +38,7 @@ export function ensureSchema(): Promise<void> {
           created_at  timestamptz NOT NULL DEFAULT now()
         )
       `;
-      await db`CREATE INDEX IF NOT EXISTS leads_created_at_idx ON leads (created_at DESC)`;
+      await db`CREATE INDEX IF NOT EXISTS leads_created_at_idx ON leads (created_at DESC, id DESC)`;
       await db`CREATE INDEX IF NOT EXISTS leads_status_idx ON leads (status)`;
     })().catch((err) => {
       schemaReady = null; // cho phép thử lại ở request sau
