@@ -21,6 +21,14 @@ Landing page vay tín chấp + trang quản trị lưu thông tin khách đăng 
    rồi chạy `pnpm db:init --test`. Script sẽ tạo bảng, in cấu trúc bảng và ghi
    thử một dòng rồi xoá đi để chắc chắn chuỗi kết nối có quyền ghi.
 
+## Cấu hình build trên Vercel
+
+`vercel.json` khai báo `framework: nextjs` và bỏ trống `outputDirectory` để ghi
+đè cấu hình cũ của dự án Vite (Output Directory `dist`). Nếu Vercel vẫn báo
+*"No Output Directory named dist found"*, vào Settings > Build & Deployment và
+đổi **Framework Preset** sang **Next.js**, đồng thời tắt ô ghi đè
+**Output Directory**.
+
 ## Sử dụng
 
 - Trang chủ `/` – khách điền form đăng ký vay.
