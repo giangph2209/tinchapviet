@@ -288,7 +288,7 @@ function Hero({ onContact }: { onContact: () => void }) {
               Hạn mức khoản vay
             </div>
             <div className="text-white text-3xl sm:text-4xl font-black tracking-tight">
-              50 Triệu – 1 Tỷ VNĐ
+              50 Triệu – 3 Tỷ VNĐ
             </div>
           </div>
 
@@ -482,7 +482,7 @@ function Benefits() {
         <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
             { value: "5.000+", label: "Hộ kinh doanh" },
-            { value: "50Tr–1Tỷ", label: "Hạn mức vay" },
+            { value: "50Tr–3Tỷ", label: "Hạn mức vay" },
             { value: "24h", label: "Giải ngân nhanh" },
             { value: "98%", label: "Khách hàng hài lòng" },
           ].map((s) => (
@@ -692,6 +692,7 @@ function ContactCTA({ id }: { id?: string }) {
                     <option>100 – 300 Triệu</option>
                     <option>300 – 500 Triệu</option>
                     <option>500 Triệu – 1 Tỷ</option>
+                    <option>1 Tỷ – 3 Tỷ</option>
                   </select>
                 </div>
                 <div>

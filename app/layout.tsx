@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Tín Chấp Việt – Vay tín chấp, giải ngân nhanh toàn quốc",
   description:
-    "Vay tín chấp 50 triệu đến 1 tỷ, thủ tục đơn giản, giải ngân trong ngày. Hotline 0985 410 836.",
+    "Vay tín chấp 50 triệu đến 3 tỷ, thủ tục đơn giản, giải ngân trong ngày. Hotline 0985 410 836.",
   icons: { icon: "/logo.png", apple: "/logo.png" },
 };
 
